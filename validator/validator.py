@@ -32,9 +32,19 @@ class Validator(object):
         self.error_log = None
 
     def load_json(self, path_to_file):
+        """
+        Loads the user JSON
+        :param path_to_file: String, path to JSON file
+        :return: None
+        """
         self.json_data = self.parse_json(path_to_file)
 
     def load_schema(self, path_to_schema):
+        """
+        Loads the FunPDBe schema
+        :param path_to_schema: String, path to FunPDBe schema
+        :return: None
+        """
         self.schema = self.parse_json(path_to_schema)
 
     def parse_json(self, path):
@@ -56,11 +66,20 @@ class Validator(object):
             return None
 
     def basic_checks(self):
+        """
+        Performs basic data checks
+        :return: Bool, True if valid, False if invalid
+        """
         if self.test_resource() and self.test_pdb_id():
             return True
         return False
 
     def test_resource(self):
+        """
+        Check if data_resource field exists in the JSON,
+        and if it is the same as the provided resource name
+        :return: Bool, True if valid, False if invalid
+        """
         if "data_resource" not in self.json_data.keys():
             self.error_log = "No data resource name found"
             return False
@@ -70,6 +89,11 @@ class Validator(object):
         return True
 
     def test_pdb_id(self):
+        """
+        Check if PDB id exists in the JSON, and if it follows
+        the PDB id pattern
+        :return: Bool, True if valid, False if invalid
+        """
         if "pdb_id" not in self.json_data.keys():
             self.error_log = "No PDB id found"
             return False
@@ -79,14 +103,14 @@ class Validator(object):
         return True
 
     def validate_against_schema(self):
+        """
+        Calls jsonschema.validate() to compare the JSON with
+        the FunPDBe JSON schema
+        :return: Bool, True is valid, False if invalid
+        """
         try:
             jsonschema.validate(self.json_data, self.schema)
             return True
         except jsonschema.exceptions.ValidationError as err:
             self.error_log = "JSON does not comply with schema: %s" % err
             return False
-
-
-
-# TODO - Add the file path to the error log, if not empty
-# jsonschema.validate(json_data, self.json_schema)
