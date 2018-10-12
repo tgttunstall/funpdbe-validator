@@ -7,38 +7,42 @@
   "pdb_id": "2gs6",
   "chains": [
     {
+      "additional_chain_annotations": {},
       "residues": [
         {
-          "pdb_res_label": "811",
+          "additional_residue_annotations": {},
+          "pdb_res_label": 811,
           "aa_type": "HIS",
           "site_data": [
             {
               "confidence_score": 1,
-              "site_id_ref": 1,
+              "site_id_ref": 811,
               "confidence_classification": "high",
               "raw_score": 1
             }
           ]
         },
         {
-          "pdb_res_label": "812",
+          "additional_residue_annotations": {},
+          "pdb_res_label": 812,
           "aa_type": "ARG",
           "site_data": [
             {
               "confidence_score": 1,
-              "site_id_ref": 2,
+              "site_id_ref": 812,
               "confidence_classification": "high",
               "raw_score": 1
             }
           ]
         },
         {
-          "pdb_res_label": "813",
+          "additional_residue_annotations": {},
+          "pdb_res_label": 813,
           "aa_type": "ASP",
           "site_data": [
             {
               "confidence_score": 1,
-              "site_id_ref": 2,
+              "site_id_ref": 813,
               "confidence_classification": "high",
               "raw_score": 1
             }
@@ -50,18 +54,31 @@
   ],
   "sites": [
     {
-      "site_id": 1,
-      "label": "HRD motif"
+      "additional_site_annotations": {},
+      "source_release_date": "06/20/2006",
+      "site_id": 811,
+      "label": "HRD motif",
+      "source_accession": "2gs6",
+      "source_database": "pdb"
     },
     {
-      "site_id": 2,
-      "label": "HRD motif"
+      "additional_site_annotations": {},
+      "source_release_date": "06/20/2006",
+      "site_id": 812,
+      "label": "HRD motif",
+      "source_accession": "2gs6",
+      "source_database": "pdb"
     },
     {
-      "site_id": 3,
-      "label": "HRD motif"
+      "additional_site_annotations": {},
+      "source_release_date": "06/20/2006",
+      "site_id": 813,
+      "label": "HRD motif",
+      "source_accession": "2gs6",
+      "source_database": "pdb"
     }
   ],
+  "additional_entry_annotations": {},
   "evidence_code_ontology": [
     {
       "eco_term": "computational combinatorial evidence",

@@ -28,15 +28,14 @@ class TestValidator(unittest.TestCase):
 
     def test_json_parser(self):
         validator = Validator("resource_name")
-        data = validator.parse_json("../data/test_data.json")
+        data = validator.parse_json("data/test_data.json")
         self.assertIsNotNone(data)
-        validator.parse_json("../data/test_data_malformed.json")
+        validator.parse_json("data/test_data_malformed.json")
         self.assertIn("JSON error", validator.error_log)
 
     def test_basic_checks(self):
         validator = Validator("test")
         validator.json_data = {"data_resource": "test", "pdb_id": "1abc"}
-        print(validator.json_data)
         self.assertTrue(validator.basic_checks())
         validator.json_data = {"data_resource": "test"}
         self.assertFalse(validator.basic_checks())
@@ -62,3 +61,13 @@ class TestValidator(unittest.TestCase):
         validator = Validator("test")
         validator.json_data = {"data_resource": "test", "pdb_id": "invalid"}
         self.assertFalse(validator.test_pdb_id())
+
+    def test_json_validation(self):
+        validator = Validator("ProKinO")
+        validator.load_json("data/test_data.json")
+        validator.load_schema("data/funpdbe_schema.json")
+        validation = validator.validate_against_schema()
+        self.assertTrue(validation)
+        validator.load_json("data/test_data_invalid.json")
+        validation = validator.validate_against_schema()
+        self.assertFalse(validation)
