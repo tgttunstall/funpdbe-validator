@@ -19,7 +19,7 @@ import json
 import requests
 
 
-class CheckResidueIndices(object):
+class ResidueIndexes(object):
     """
     This class has all the methods required for validating the
     residue indices that are in the user submitted data.
@@ -29,7 +29,7 @@ class CheckResidueIndices(object):
     indices
 
     Example usage:
-    check_indexes = CheckResidueIndices(your_json_object)
+    check_indexes = ResidueIndexes(your_json_object)
     if check_indexes.check_every_residue():
         # all residues in every chain are correctly indexed
     """

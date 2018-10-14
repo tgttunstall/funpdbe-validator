@@ -18,7 +18,7 @@ License.
 import json
 from unittest import TestCase
 
-from validator.residue_index import CheckResidueIndices
+from validator.residue_index import ResidueIndexes
 
 with open("data/test_data.json", "r") as mock_data_file:
     mock_data = json.load(mock_data_file)
@@ -46,7 +46,7 @@ def mock_compare_residue_number(self, foo, bar):
 class TestCheckResidueIndices(TestCase):
 
     def setUp(self):
-        self.cri = CheckResidueIndices(mock_data)
+        self.cri = ResidueIndexes(mock_data)
 
     def test_loop_chains(self):
         self.cri._get_residue_numbering = mock_get_residue_numbering_false
@@ -60,7 +60,7 @@ class TestCheckResidueIndices(TestCase):
 
     def test_set_pdb_id(self):
         self.assertIsNotNone(self.cri._set_pdb_id())
-        bad_cri = CheckResidueIndices(mock_data_no_pdb_id)
+        bad_cri = ResidueIndexes(mock_data_no_pdb_id)
         self.assertIsNone(bad_cri._set_pdb_id())
 
     def test_check_numbering(self):
@@ -85,7 +85,7 @@ class TestCheckResidueIndices(TestCase):
         self.assertFalse(result)
 
     def test_with_bad_numbering(self):
-        cri_with_bad_numbering = CheckResidueIndices(mock_data_bad_numbering)
+        cri_with_bad_numbering = ResidueIndexes(mock_data_bad_numbering)
         result = cri_with_bad_numbering.check_every_residue()
         self.assertFalse(result)
 
