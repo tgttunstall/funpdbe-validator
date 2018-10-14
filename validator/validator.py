@@ -23,6 +23,13 @@ import re
 class Validator(object):
     """
     Validates FunPDBe JSON files
+
+    Example usage:
+    validator = Validator()
+    validator.load_schema("path/to/schema")
+    validator.load_json("path/to/json")
+    if validator.basic_checks() and validator.validate_against_schema():
+        # the input JSON is a valid FunPDBe file
     """
 
     def __init__(self, resource):
@@ -37,7 +44,7 @@ class Validator(object):
         :param path_to_file: String, path to JSON file
         :return: None
         """
-        self.json_data = self.parse_json(path_to_file)
+        self.json_data = self._parse_json(path_to_file)
 
     def load_schema(self, path_to_schema):
         """
@@ -45,9 +52,31 @@ class Validator(object):
         :param path_to_schema: String, path to FunPDBe schema
         :return: None
         """
-        self.schema = self.parse_json(path_to_schema)
+        self.schema = self._parse_json(path_to_schema)
 
-    def parse_json(self, path):
+    def basic_checks(self):
+        """
+        Performs basic data checks
+        :return: Bool, True if valid, False if invalid
+        """
+        if self._test_resource() and self._test_pdb_id():
+            return True
+        return False
+
+    def validate_against_schema(self):
+        """
+        Calls jsonschema.validate() to compare the JSON with
+        the FunPDBe JSON schema
+        :return: Bool, True is valid, False if invalid
+        """
+        try:
+            jsonschema.validate(self.json_data, self.schema)
+            return True
+        except jsonschema.exceptions.ValidationError as err:
+            self.error_log = "JSON does not comply with schema: %s" % err
+            return False
+
+    def _parse_json(self, path):
         """
         Parses a FunPDBe JSON file and in case of file error
         or JSON error, the error message is saved to self.error_log
@@ -65,16 +94,7 @@ class Validator(object):
             self.error_log = "File error: %s" % ioerr
             return None
 
-    def basic_checks(self):
-        """
-        Performs basic data checks
-        :return: Bool, True if valid, False if invalid
-        """
-        if self.test_resource() and self.test_pdb_id():
-            return True
-        return False
-
-    def test_resource(self):
+    def _test_resource(self):
         """
         Check if data_resource field exists in the JSON,
         and if it is the same as the provided resource name
@@ -88,7 +108,7 @@ class Validator(object):
             return False
         return True
 
-    def test_pdb_id(self):
+    def _test_pdb_id(self):
         """
         Check if PDB id exists in the JSON, and if it follows
         the PDB id pattern
@@ -101,16 +121,3 @@ class Validator(object):
             self.error_log = "Invalid PDB id found"
             return False
         return True
-
-    def validate_against_schema(self):
-        """
-        Calls jsonschema.validate() to compare the JSON with
-        the FunPDBe JSON schema
-        :return: Bool, True is valid, False if invalid
-        """
-        try:
-            jsonschema.validate(self.json_data, self.schema)
-            return True
-        except jsonschema.exceptions.ValidationError as err:
-            self.error_log = "JSON does not comply with schema: %s" % err
-            return False
