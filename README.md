@@ -28,7 +28,31 @@ $ cd funpdbe-validator
 $ pip3 install -r requirements.txt
 ```
 
-## Running the tests
+### Basic usage
+
+This package contains two classes which handle the validation of FunPDBe JSON files.
+
+* Validator()
+* ResidueIndexes()
+
+Example:
+```
+from validator.validator import Validator
+from validator.residue_index import ResidueIndexes
+
+validator = Validator("funpdbe_resource_name") # Same as in the JSON
+validator.load_schema("data/funpdbe_schema.json")
+validator.load_json("data/funpdbe_data.json")
+
+if validator.basic_checks() and validator.validate_against_schema():
+    # Passed data validations
+    residue_indexes = ResidueIndexes(validator.json_data)
+    if residue_indexes.check_every_residue():
+        # Passed the index validation
+        return True
+```
+
+### Running the tests
 
 Running tests for the client is performed simply by using
 ```
