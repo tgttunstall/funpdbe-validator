@@ -3,7 +3,7 @@ FunPDBe JSON Validator
 
 This Python3 client can be used for validating FunPDBe JSON files. It performs various sanity checks, and validates user JSONs against the FunPDBe schema.
 
-For more information on what FunPDBe is, visit https://funpdbe.org
+For more information on FunPDBe is, visit https://funpdbe.org
 
 Quick start
 -----------
