@@ -77,9 +77,9 @@ class ResidueIndexes(object):
         if not residue_numbering.keys():
             self.mismatches.append("No residues in PDB for this entry - probably obsoleted entry")
             return False
-        return self._check_numbering(residue_numbering, chain_data)
+        return self._check_numbering(residue_numbering, chain_data, chain_id)
 
-    def _check_numbering(self, residue_numbering, chain_data):
+    def _check_numbering(self, residue_numbering, chain_data, chain_id):
         """
         This method loops through all the residues in a chain
         and call the residue index comparator method
@@ -92,11 +92,13 @@ class ResidueIndexes(object):
         for residue in chain_data["residues"]:
             depositor_residue_number = residue["pdb_res_label"]
             depositor_aa_type = residue["aa_type"]
-            if not self._compare_residue_number(depositor_residue_number, depositor_aa_type, residue_numbering):
+            if not self._compare_residue_number(depositor_residue_number, depositor_aa_type, residue_numbering,
+                                                chain_id):
                 return False
         return True
 
-    def _compare_residue_number(self, depositor_residue_number, depositor_aa_type, residue_numbering):
+    def _compare_residue_number(self, depositor_residue_number, depositor_aa_type, residue_numbering,
+                                depositor_chain_id):
         """
         This method starts looping through the substructure of the PDBe API data
         :param depositor_residue_number: Residue number provided by the user
@@ -105,9 +107,10 @@ class ResidueIndexes(object):
         :return: True is residue numbering is valid, False if not
         """
         molecules = residue_numbering[self.pdb_id]["molecules"]
-        return self._recursive_loop(molecules, "chains", depositor_residue_number, depositor_aa_type)
+        return self._recursive_loop(molecules, "chains", depositor_residue_number, depositor_aa_type,
+                                    depositor_chain_id)
 
-    def _recursive_loop(self, data, label, depositor_residue_number, depositor_aa_type):
+    def _recursive_loop(self, data, label, depositor_residue_number, depositor_aa_type, depositor_chain_id):
         """
         A recursive loop that goes down to residue level and processes all residues
         :param data: JSON data
@@ -120,13 +123,14 @@ class ResidueIndexes(object):
         for item in data:
             sub_data = item[label]
             if label == "chains":
-                flag = self._recursive_loop(sub_data, "residues", depositor_residue_number, depositor_aa_type)
+                flag = self._recursive_loop(sub_data, "residues", depositor_residue_number, depositor_aa_type,
+                                            depositor_chain_id)
             elif label == "residues":
-                return self._process_residues(sub_data, depositor_residue_number, depositor_aa_type)
+                return self._process_residues(sub_data, depositor_residue_number, depositor_aa_type, depositor_chain_id)
         if label == "chains":
             return flag
 
-    def _process_residues(self, residues, depositor_residue_number, depositor_aa_type):
+    def _process_residues(self, residues, depositor_residue_number, depositor_aa_type, depositor_chain_id):
         """
         This method grabs the residue information and call the comparator if the
         residue number of PDBe is the same as the user input
@@ -136,12 +140,16 @@ class ResidueIndexes(object):
         :return: True is residue numbering is valid, False if not
         """
         for residue in residues:
-            if "%i%s" % (residue["author_residue_number"], residue["author_insertion_code"]) == depositor_residue_number:
-                return self._make_comparison(residue["residue_name"], depositor_aa_type, depositor_residue_number)
-        self.mismatches.append("residue numbering is completely mismatched between data and PDB entry")
+            if "%i%s" % (
+                    residue["author_residue_number"], residue["author_insertion_code"]) == depositor_residue_number:
+                return self._make_comparison(residue["residue_name"], depositor_aa_type, depositor_residue_number,
+                                             depositor_chain_id)
+        self.mismatches.append(
+            "residue numbering is completely mismatched between data and PDB entry (invalid residue: %s_%s)" % (
+                depositor_chain_id, depositor_residue_number))
         return False
 
-    def _make_comparison(self, residue_name, depositor_aa_type, depositor_residue_number):
+    def _make_comparison(self, residue_name, depositor_aa_type, depositor_residue_number, depositor_chain_id):
         """
         This method does the comparison between two residues that have the same index number
         The comparison is between amino acid code
@@ -152,7 +160,7 @@ class ResidueIndexes(object):
         """
         if residue_name == depositor_aa_type:
             return True
-        mismatch = "residue %s (%s) in data does not match residue %s (%s) in PDB" % (
-            depositor_residue_number, depositor_aa_type, depositor_residue_number, residue_name)
+        mismatch = "residue %s_%s (%s) in data does not match residue %s (%s) in PDB" % (
+            depositor_chain_id, depositor_residue_number, depositor_aa_type, depositor_residue_number, residue_name)
         self.mismatches.append(mismatch)
         return False
