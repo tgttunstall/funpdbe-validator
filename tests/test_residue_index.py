@@ -23,6 +23,9 @@ from validator.residue_index import ResidueIndexes
 with open("data/test_data.json", "r") as mock_data_file:
     mock_data = json.load(mock_data_file)
 
+with open("data/test_data_multichain.json", "r") as mock_data_file_multichain:
+    mock_data_multichain = json.load(mock_data_file_multichain)
+
 mock_data_no_pdb_id = {"foo": "bar"}
 
 mock_data_bad_numbering = {"pdb_id": "2aqa",
@@ -102,3 +105,8 @@ class TestCheckResidueIndices(TestCase):
         result = self.cri._process_residues(
             [{"author_residue_number": 1, "residue_name": "ALA", "author_insertion_code": ""}], "1", "HIS")
         self.assertFalse(result)
+
+    def test_with_multichain(self):
+        self.cri = ResidueIndexes(mock_data_multichain)
+        result = self.cri.check_every_residue()
+        self.assertTrue(result)
