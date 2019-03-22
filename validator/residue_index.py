@@ -2,11 +2,9 @@
 
 """
 Copyright 2018 EMBL - European Bioinformatics Institute
-
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-
 Unless required by applicable law or agreed to in writing,
 software distributed under the License is distributed on an
 "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
@@ -27,7 +25,6 @@ class ResidueIndexes(object):
     and each has to match the indices in the official PDB entry
     This class relies on the PDBe API to get the current residue
     indices
-
     Example usage:
     check_indexes = ResidueIndexes(your_json_object)
     if check_indexes.check_every_residue():
@@ -119,16 +116,21 @@ class ResidueIndexes(object):
         :param depositor_aa_type: Residue amino acid code provided by user
         :return: True is residue numbering is valid, False if not
         """
-        flag = None
+        flag = False
         for item in data:
             sub_data = item[label]
             if label == "chains":
-                flag = self._recursive_loop(sub_data, "residues", depositor_residue_number, depositor_aa_type,
+                flag |= self._recursive_loop(sub_data, "residues", depositor_residue_number, depositor_aa_type,
                                             depositor_chain_id)
             elif label == "residues":
                 return self._process_residues(sub_data, depositor_residue_number, depositor_aa_type, depositor_chain_id)
+
         if label == "chains":
             return flag
+
+        if label == "residues":
+            # We were checking residues and none was found, so not match found -> False.
+            return False
 
     def _process_residues(self, residues, depositor_residue_number, depositor_aa_type, depositor_chain_id):
         """
@@ -158,7 +160,7 @@ class ResidueIndexes(object):
         :param depositor_residue_number: Residue number provided by the user
         :return: True is residue numbering is valid, False if not
         """
-        if residue_name == depositor_aa_type:
+        if residue_name.lower() == depositor_aa_type.lower():
             return True
         mismatch = "residue %s_%s (%s) in data does not match residue %s (%s) in PDB" % (
             depositor_chain_id, depositor_residue_number, depositor_aa_type, depositor_residue_number, residue_name)
