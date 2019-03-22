@@ -63,7 +63,9 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 * **Mihaly Varadi** - *Initial work* - [mvaradi](https://github.com/mvaradi)
 
-See also the list of [contributors](https://github.com/funpdbe-consortium/funpdbe-validator/graphs/contributors) who participated in this project.
+Special thanks to:
+* Skoda Petr https://github.com/skodapetr
+* Radoslav Krivak https://github.com/rdk
 
 ## License
 
