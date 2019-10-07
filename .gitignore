@@ -2,3 +2,6 @@
 .cache*
 *vcs.xml
 sample_data/*
+local-test.py
+.DS_Store
+*.pyc

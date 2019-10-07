@@ -87,8 +87,8 @@ class Validator(object):
             with open(path, "r") as json_file:
                 try:
                     return json.load(json_file)
-                except json.decoder.JSONDecodeError as err:
-                    self.error_log = "JSON error: %s" % err
+                except:
+                    self.error_log = "JSON error: %s" % path
                     return None
         except IOError as ioerr:
             self.error_log = "File error: %s" % ioerr
