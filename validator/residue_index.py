@@ -69,8 +69,15 @@ class ResidueIndexes(object):
         """
         chain_id = chain_data["chain_label"]
         url = "%s%s/chain/%s" % (self.api_url, self.pdb_id, chain_id)
-        response = requests.get(url)
-        residue_numbering = json.loads(response.text)
+        try:
+            response = requests.get(url)
+        except:
+            return False
+        try:
+            residue_numbering = json.loads(response.text)
+        except:
+            print("Failed to load residues from PDBe API")
+            return False
         if not residue_numbering.keys():
             self.mismatches.append("No residues in PDB for this entry - probably obsoleted entry")
             return False
