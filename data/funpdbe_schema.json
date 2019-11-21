@@ -146,6 +146,10 @@
             "type": "string",
             "description": "Site label"
           },
+          "site_url": {
+            "type": "string",
+            "description": "URL linking to information on the functional site at the partner resource"
+          },
           "source_database": {
             "type": "string",
             "description": "Name of the source database"
@@ -158,6 +162,10 @@
             "type": "string",
             "description": "Date of acquiring data from source",
             "pattern": "^[0-3]*[0-9]/[0-1]*[0-9]/[1-2][0-9]{3}$"
+          },
+          "source_version": {
+            "type": "string",
+            "description": "Version of the data source"
           },
           "additional_site_annotations": {
             "type": "object",
