@@ -19,7 +19,7 @@ Please note that the client is written in Python3, and the dependencies have to 
 #### Checking out this repository
 
 ```
-$ git clone https://github.com/funpdbe-consortium/funpdbe-validator
+$ git clone https://gitlab.ebi.ac.uk/pdbe-kb/funpdbe/funpdbe-validator.git
 $ cd funpdbe-validator
 $ pip3 install -r requirements.txt
 ```
