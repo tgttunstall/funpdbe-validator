@@ -40,12 +40,17 @@ validator = Validator("funpdbe_resource_name") # Same as in the JSON
 validator.load_schema("data/funpdbe_schema.json")
 validator.load_json("data/funpdbe_data.json")
 
+
 if validator.basic_checks() and validator.validate_against_schema():
     # Passed data validations
+    print('Passed schema validation')
     residue_indexes = ResidueIndexes(validator.json_data)
     if residue_indexes.check_every_residue():
         # Passed the index validation
-        return True
+        print('Passed index validation')
+else:
+    print('Failed schema validation')
+    print(validator.error_log)
 ```
 
 ### Running the tests
