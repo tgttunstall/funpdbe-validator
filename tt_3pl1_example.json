@@ -1,0 +1,87 @@
+{
+  "data_resource": "FoldX",
+  "resource_version": "5.0",
+  "software_version": "5.0",
+  "resource_entry_url": "http://foldxsuite.crg.eu/",
+  "pdb_id": "3PL1",
+  "chains": [
+    {
+      "residues": [
+        {
+          "pdb_res_label": "10",
+          "aa_type": "GLN",
+          "site_data": [
+            {
+              "site_id_ref": 1,
+              "confidence_score": 1,
+              "confidence_classification": "curated",
+              "raw_score": 3.9475,
+              "raw_score_unit": "kcal/mol",
+              "aa_variant": "GLY"
+            },
+            {
+              "site_id_ref": 2,
+              "confidence_score": 1,
+              "confidence_classification": "high",
+              "raw_score": 2.88633,
+              "raw_score_unit": "kcal/mol",
+              "aa_variant": "ALA"
+            }
+          ]
+        },
+        {
+          "pdb_res_label": "11",
+          "aa_type": "ASN",
+          "site_data": [
+            {
+              "site_id_ref": 3,
+              "confidence_score": 1,
+              "confidence_classification": "curated",
+              "raw_score": 1.15843,
+              "raw_score_unit": "kcal/mol",              
+              "aa_variant": "GLY"
+            }
+          ]
+        },
+        {
+          "pdb_res_label": "12",
+          "aa_type": "ASP",
+          "site_data": [
+            {
+              "site_id_ref": 4,
+              "confidence_score": 1,
+              "confidence_classification": "high",
+              "raw_score": 1.71712,
+              "aa_variant": "GLY"
+            }
+          ]
+        }
+      ],
+      "chain_label": "A"
+    }
+  ],
+  "sites": [
+    {
+      "site_id": 1,
+      "label": "ddG"
+    },
+    {
+      "site_id": 2,
+      "label": "ddG"
+    },
+    {
+      "site_id": 3,
+      "label": "ddG"
+    },
+    {
+      "site_id": 4,
+      "label": "ddG"
+    }
+  ],
+  "evidence_code_ontology": [
+    {
+      "eco_term": "computational experiment",
+      "eco_code": "ECO_0000006"
+    }
+  ]
+}
