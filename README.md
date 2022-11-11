@@ -37,7 +37,7 @@ from validator.validator import Validator
 from validator.residue_index import ResidueIndexes
 
 validator = Validator("funpdbe_resource_name") # Same as in the JSON
-validator.load_schema("data/funpdbe_schema.json")
+validator.load_schema()
 validator.load_json("data/funpdbe_data.json")
 
 
